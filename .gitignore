@@ -4,7 +4,7 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
+# we need *.jar, put proxool-0.9.1.jar for tomcat under WEB-INF/lib
 *.war
 *.ear
 

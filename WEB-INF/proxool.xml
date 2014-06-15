@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<proxool>
+		<alias>mysql</alias>
+		<driver-url>jdbc:mysql://127.0.0.1:3306/test</driver-url>
+		<driver-class>com.mysql.jdbc.Driver</driver-class>
+		<driver-properties>
+			<property name="user" value="root" />
+			<property name="password" value="Who'syourdad?" />
+		</driver-properties>
+		<maximum-connection-count>10</maximum-connection-count>
+		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>
+</proxool>
