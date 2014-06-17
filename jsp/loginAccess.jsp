@@ -10,7 +10,7 @@
 
 	<p>Login OK</p>
 	<p>&nbsp;</p>
-	<p><a href="login.jsp">Go Back</a></p>
+	<p><a href="/tomcatsample/index.jsp">Go Back</a></p>
 	<p>&nbsp;</p>
 </body>
 </html>

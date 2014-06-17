@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 
 public class CheckLogin
 {
-	public boolean isLogin(HttpServletRequest request)
+	private int mRole = 0;
+	private int mAction = 0;
+	
+	public boolean validLogin(HttpServletRequest request)
 	{
 		String name=request.getParameter("txtName");
 		String pwd=request.getParameter("txtPwd");
@@ -32,6 +35,8 @@ public class CheckLogin
 				rs.next(); // ask db to transfer a row to this server
 				if (Md5Hash.md5(pwd).equals(rs.getString("passwd"))) {
 					result = true;
+					this.setmRole(rs.getInt("role"));
+					this.setmAction(rs.getInt("action"));
 				} else {
 					result = false;
 				}
@@ -60,4 +65,22 @@ public class CheckLogin
 		
 		return result;
 	}
+
+	public int getmRole() {
+		return mRole;
+	}
+
+	private void setmRole(int mRole) {
+		this.mRole = mRole;
+	}
+
+	public int getmAction() {
+		return mAction;
+	}
+
+	private void setmAction(int mAction) {
+		this.mAction = mAction;
+	}
+	
+	
 }

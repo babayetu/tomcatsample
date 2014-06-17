@@ -17,20 +17,26 @@ public class LoginServlet extends HttpServlet
 
 	public void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException
 	{
-		CheckLogin c =new CheckLogin();
-		if(c.isLogin(request))
+		CheckLogin checkLogin =new CheckLogin();
+		if(checkLogin.validLogin(request))
 		{
     		HttpSession session =request.getSession();
     		String name=request.getParameter("txtName");
     		session.setAttribute("userName",name);
     		
+    		//role cookie is for other page to determine user permissions
+    		
+    		Cookie role=new LongTimeCookie("role",Md5Hash.md5(String.valueOf(checkLogin.getmRole())));
+    		response.addCookie(role);
+    		
 	    	if(request.getParameter("checkbox")!=null)
 	    	{
-	    		Cookie coo=new LongTimeCookie("loginName",name);
-	    		response.addCookie(coo);		
+	    		Cookie loginName=new LongTimeCookie("loginName",name);	    		
+	    		response.addCookie(loginName);		
+	    		
 	    	}
 	    	
-			response.sendRedirect("/tomcatsample/jsp/loginAccess.jsp");
+			response.sendRedirect("/tomcatsample/index.jsp");
 		}
 		else
 			response.sendRedirect("/tomcatsample/jsp/loginFail.jsp");

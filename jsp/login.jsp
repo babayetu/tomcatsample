@@ -46,7 +46,7 @@
     <tr>
       <td><div align="center">pwd</div></td>
       <td colspan="2"><label>
-        <input name="txtPwd" type="text" id="txtPwd" />
+        <input name="txtPwd" type="password" id="txtPwd" />
       </label></td>
     </tr>
     <tr>

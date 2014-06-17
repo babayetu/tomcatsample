@@ -8,6 +8,6 @@
 
 <body>
 		<p>Login Failed</p>
-		<p><a href="login.jsp">Go Back</a> </p>
+		<p><a href="login.jsp">Login Again</a> </p>
 </body>
 </html>
