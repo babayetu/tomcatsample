@@ -2,11 +2,11 @@
 
 <proxool>
 		<alias>mysql</alias>
-		<driver-url>jdbc:mysql://127.0.0.1:3306/test</driver-url>
+		<driver-url>jdbc:mysql://10.64.247.80:3306/test</driver-url>
 		<driver-class>com.mysql.jdbc.Driver</driver-class>
 		<driver-properties>
 			<property name="user" value="root" />
-			<property name="password" value="Who'syourdad?" />
+			<property name="password" value="4yxsmcG69XpPf2dbw4UY8BjvGJAEf6svmy2n" />
 		</driver-properties>
 		<maximum-connection-count>10</maximum-connection-count>
 		<house-keeping-test-sql>select CURRENT_DATE</house-keeping-test-sql>

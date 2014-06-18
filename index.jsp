@@ -1,10 +1,10 @@
 <%
    String username=(String)session.getAttribute("userName");
    if(username==null || username.equals("")){
-      request.getRequestDispatcher("/jsp/login.jsp").forward(request,response);
+      request.getRequestDispatcher("/html/login_betpal.html").forward(request,response);
      return;
    } else {
       //out.println("Welcome back, " + username);
-      request.getRequestDispatcher("/jsp/user_main.jsp").forward(request,response);
+      request.getRequestDispatcher("/html/table_betpal.html").forward(request,response);
    }
 %>

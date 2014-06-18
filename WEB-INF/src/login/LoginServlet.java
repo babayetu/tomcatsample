@@ -17,29 +17,34 @@ public class LoginServlet extends HttpServlet
 
 	public void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException
 	{
-		CheckLogin checkLogin =new CheckLogin();
-		if(checkLogin.validLogin(request))
+//		CheckLogin checkLogin =new CheckLogin();
+//		if(checkLogin.validLogin(request))
+		LdapAuth ldap = new LdapAuth();
+		if (ldap.validate(request))
 		{
     		HttpSession session =request.getSession();
-    		String name=request.getParameter("txtName");
+    		String name=request.getParameter("username");
     		session.setAttribute("userName",name);
     		
     		//role cookie is for other page to determine user permissions
     		
-    		Cookie role=new LongTimeCookie("role",Md5Hash.md5(String.valueOf(checkLogin.getmRole())));
+    		//Cookie role=new LongTimeCookie("role",Md5Hash.md5(String.valueOf(checkLogin.getmRole())));
+    		Cookie role=new LongTimeCookie("role",Md5Hash.md5(String.valueOf(ldap.getmRole())));
     		response.addCookie(role);
     		
 	    	if(request.getParameter("checkbox")!=null)
 	    	{
 	    		Cookie loginName=new LongTimeCookie("loginName",name);	    		
-	    		response.addCookie(loginName);		
-	    		
+	    		response.addCookie(loginName);	    		
+	    	} else {
+	    		Cookie loginName=new Cookie("loginName",name);	    		
+	    		response.addCookie(loginName);
 	    	}
 	    	
-			response.sendRedirect("/tomcatsample/index.jsp");
+			response.sendRedirect("/tomcatsample/html/table_betpal.html");
 		}
 		else
-			response.sendRedirect("/tomcatsample/jsp/loginFail.jsp");
+			response.sendRedirect("/tomcatsample/html/login_betpal.html");
 	}	
 	
 	public void doPost(HttpServletRequest request,HttpServletResponse response)throws ServletException,IOException

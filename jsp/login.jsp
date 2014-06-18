@@ -20,7 +20,6 @@
 <title>Login Page</title>
 </head>
 
-<body>
 <% 
 	if(name==null)
 	{
@@ -31,7 +30,9 @@
 	else
 	{
 %>
-		Current User: <%=name%>
+<br><br>
+<p>Current User: <%=name%></p>
+<br><br>
 <%  }
 %>
 
