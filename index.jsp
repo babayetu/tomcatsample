@@ -181,10 +181,10 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-								  <th>Username</th>
-								  <th>Date registered</th>
-								  <th>Role</th>
-								  <th>Point</th>
+								  <th>用户名</th>
+								  <th>余额点数</th>
+								  <th>权限</th>
+								  <th>参赛日期</th>								  								  
 							  </tr>
 						  </thead>   
 						  <tbody>
@@ -192,10 +192,10 @@
 									while (rs.next()) {
 								%>
 								<tr>
-									<td><%=rs.getString(1)%></td>
-									<td class="center"><%=rs.getString(4)%></td>
-									<td class="center"><%=rs.getString(2)%></td>
-									<td class="center"><%=rs.getString(6)%></td>
+									<td><%=rs.getString("name")%></td>
+									<td class="center"><%=rs.getString("money")%></td>
+									<td class="center"><%=rs.getString("role")%></td>
+									<td class="center"><%=rs.getString("register_time")%></td>
 								</tr>
 								<%}
 								if (rs != null) {
