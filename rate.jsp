@@ -1,14 +1,15 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*" %>
+<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
 
 <%
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
+	DecimalFormat form=new DecimalFormat("0.00"); 
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myuser order by money desc";
+	String combineSQL= "select * from rate where rate_status='Open'";
 	rs = st.executeQuery(combineSQL);	
 %>
 
@@ -181,10 +182,11 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-								  <th>Username</th>
-								  <th>Date registered</th>
-								  <th>Role</th>
-								  <th>Point</th>
+								  <th>主队</th>
+								  <th>客队</th>
+								  <th>结果</th>
+								  <th>赔率</th>
+								  <th>状态</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
@@ -192,10 +194,16 @@
 									while (rs.next()) {
 								%>
 								<tr>
-									<td><%=rs.getString(1)%></td>
-									<td class="center"><%=rs.getString(4)%></td>
-									<td class="center"><%=rs.getString(2)%></td>
-									<td class="center"><%=rs.getString(6)%></td>
+									<td><%=rs.getString("host_team")%></td>
+									<td class="center"><%=rs.getString("guest_team")%></td>
+									<td class="center"><%=rs.getString("match_result")%></td>
+									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
+									<td class="center">
+									<a class="btn btn-success" href="#">
+										<i class="icon-calendar icon-white"></i>  
+										Active                                            
+									</a>
+								</td>
 								</tr>
 								<%}
 								if (rs != null) {
