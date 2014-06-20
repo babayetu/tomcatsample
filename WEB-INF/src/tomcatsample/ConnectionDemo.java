@@ -20,7 +20,7 @@ public class ConnectionDemo {
 
             if(!conn.isClosed()) {
 
-                System.out.println("数据库连接已开启…");
+                System.out.println("connected");
 
             }
 
@@ -32,7 +32,7 @@ public class ConnectionDemo {
 
             if(conn.isClosed()) {
 
-                System.out.println("数据库连接已关闭…");
+                System.out.println("closed");
 
             }
 

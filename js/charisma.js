@@ -283,19 +283,21 @@ function docReady(){
     //karl
 	$('.btn-success').click(function(e){
 		e.preventDefault();
-        $('#final_rate_id').val($("#bet_rate_id").val());
-		$('#myModal').modal('show');        
+		$('#myModal').val($(this).parent().parent().attr("id"));
+		$('#myModal').modal('show'); 				      
 	});
-    //$('.btn-setting').click(function(e){
-	//	e.preventDefault();
-	//	$('#myModal').modal('show');
-	//});
     $('.btn-primary').click(function(e){
-		alert("user：" + $("#betuser").html() + "\nmoney：" + $("#betmoney").val() + "\nrate_id" + $('#final_rate_id').val());
+		//alert("user：" + $("#betuser").html() + "\nmoney：" + $("#betmoney").val() + "\nrate_id" + $('#myModal').val());
+		$.post("/tomcatsample/order.do",
+  		{
+    		betuser:$("#betuser").html(),
+    		betmoney:$("#betmoney").val(),
+    		rate_id:$('#myModal').val()
+  		},
+  		function(data,status){
+    		alert(data);
+  		});	
 	});
-
-
-
 		
 	//initialize the external events for calender
 

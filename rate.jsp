@@ -11,7 +11,7 @@
 	st =con.createStatement(); 
 	String combineSQL= "select * from myrate where rate_status='open'";
 	rs = st.executeQuery(combineSQL);	
-	String username="testnow";
+	String username="karl liu";
 %>
 
 <!DOCTYPE html>
@@ -195,13 +195,13 @@
 								<%
 									while (rs.next()) {
 								%>
-								<tr>
+								<tr id="<%=rs.getString("rate_id")%>">
 									<td><%=rs.getString("host_team")%></td>
 									<td class="center"><%=rs.getString("guest_team")%></td>
 									<td class="center"><%=rs.getString("match_result")%></td>
 									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
 									<td class="center">
-									<a class="btn btn-success" href="#" id="bet_rate_id" value="<%=rs.getString("rate_id")%>">
+									<a class="btn btn-success" href="#">
 										<i class="icon-calendar icon-white"></i>  
 										下注                                            
 									</a>
@@ -231,13 +231,13 @@
 				
 		<hr>
 
-		<div class="modal hide fade" id="myModal">
+		<div class="modal hide fade" id="myModal" value="original">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
 				<h3>投注</h3>
 			</div>
 			<fieldset>
-				<div class="modal-body" id="final_rate_id" value="0">
+				<div class="modal-body">
 					下注金额   
 					<input id="betmoney" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
                     <p class="help-block">最小下注金额为1</p>
@@ -246,7 +246,7 @@
 			
 			<div class="modal-footer">
 				<a href="#" class="btn" data-dismiss="modal">关闭</a>
-				<a href="#" class="btn btn-primary">投注</a>
+				<a href="#" class="btn btn-primary" data-dismiss="modal">投注</a>
 			</div>
 		</div>
 
