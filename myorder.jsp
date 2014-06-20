@@ -1,15 +1,17 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*" %>
+<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
 
 <%
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
+	DecimalFormat form=new DecimalFormat("0.00"); 
 	
+	String username="karl liu";
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myuser order by money desc";
-	rs = st.executeQuery(combineSQL);	
+	String combineSQL= "select o.order_id,o.name,o.money,r.host_team,r.guest_team,r.match_result,r.rate,o.order_time,o.order_status from myorder o, myrate r where o.name='" + username+"' and o.rate_id = r.rate_id;";
+	rs = st.executeQuery(combineSQL);		
 %>
 
 <!DOCTYPE html>
@@ -83,7 +85,7 @@
 				<!-- theme selector starts -->
 				<div class="btn-group pull-right theme-container" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
+						<i class="icon-tint"></i><span class="hidden-phone"> Theme</span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" id="themes">
@@ -103,7 +105,7 @@
 				<!-- user dropdown starts -->
 				<div class="btn-group pull-right" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone"> admin</span>
+						<i class="icon-user"></i><span class="hidden-phone" id="betuser"><%=username%></span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
@@ -137,7 +139,7 @@
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header hidden-tablet">Main</li>
 						<li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet"> 首页</span></a></li>
-						<li><a class="ajax-link" href="myorder.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 投注一览</span></a></li>
+						<li><a class="ajax-link" href="myorder.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 我的投注</span></a></li>
 						<li><a class="ajax-link" href="rate.jsp"><i class="icon-signal"></i><span class="hidden-tablet"> 赔率</span></a></li>
 						<li><a class="ajax-link" href="match.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 比赛</span></a></li>
 						<li><a class="ajax-link" href="order.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 投注一览</span></a></li>
@@ -183,10 +185,15 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-								  <th>用户名</th>
-								  <th>余额点数</th>
-								  <th>权限</th>
-								  <th>参赛日期</th>								  								  
+								  <th>投注单</th>
+								  <th>用户</th>
+								  <th>金额</th>
+								  <th>主队</th>
+								  <th>客队</th>
+								  <th>胜负</th>
+								  <th>赔率</th>
+								  <th>投注日期</th>
+								  <th>状态</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
@@ -194,10 +201,28 @@
 									while (rs.next()) {
 								%>
 								<tr>
-									<td><%=rs.getString("name")%></td>
-									<td class="center"><%=rs.getString("money")%></td>
-									<td class="center"><%=rs.getString("role")%></td>
-									<td class="center"><%=rs.getString("register_time")%></td>
+									<td class="center"><%=rs.getInt("o.order_id")%></td>
+								    <td class="center"><%=rs.getString("o.name")%></td>
+									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
+									<td class="center"><%=rs.getString("r.host_team")%></td>
+									<td class="center"><%=rs.getString("r.guest_team")%></td>
+									<td class="center"><%=rs.getString("r.match_result")%></td>
+									<td class="center"><%=form.format(rs.getFloat("r.rate"))%></td>
+									<td class="center"><%=rs.getString("o.order_time")%></td>									
+									<td class="center">										
+											<%if (rs.getString("o.order_status").equals("valid"))
+											  {%>
+											  	<span class="label label-success">未结算</span>
+											  <%}	
+											  else if (rs.getString("o.order_status").equals("finished"))
+											  {%>
+											  	<span class="label"已结算</span>
+											  <%}
+											  else if (rs.getString("o.order_status").equals("invliad"))
+											  {%>
+											  	<span class="label label-important"无效</span>
+											  <%}%>	                                           
+								    </td>
 								</tr>
 								<%}
 								if (rs != null) {
@@ -221,20 +246,6 @@
 				</div><!--/fluid-row-->
 				
 		<hr>
-
-		<div class="modal hide fade" id="myModal">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
-			</div>
-			<div class="modal-body">
-				<p>Here settings can be configured...</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Close</a>
-				<a href="#" class="btn btn-primary">Save changes</a>
-			</div>
-		</div>
 
 		<footer>
 			<p class="pull-left">&copy; <a href="http://usman.it" target="_blank">Muhammad Usman</a> 2012</p>

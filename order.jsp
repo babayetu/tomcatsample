@@ -11,7 +11,7 @@
 	st =con.createStatement(); 
 	String combineSQL= "select o.order_id,o.name,o.money,r.host_team,r.guest_team,r.match_result,r.rate,o.order_time,o.order_status from myorder o, myrate r where o.rate_id=r.rate_id";
 	rs = st.executeQuery(combineSQL);	
-	String username="karl liu";
+	String username="ding yingqi";
 %>
 
 <!DOCTYPE html>
@@ -139,6 +139,7 @@
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header hidden-tablet">Main</li>
 						<li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet"> 首页</span></a></li>
+						<li><a class="ajax-link" href="myorder.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 我的投注</span></a></li>
 						<li><a class="ajax-link" href="rate.jsp"><i class="icon-signal"></i><span class="hidden-tablet"> 赔率</span></a></li>
 						<li><a class="ajax-link" href="match.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 比赛</span></a></li>
 						<li><a class="ajax-link" href="order.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 投注一览</span></a></li>
@@ -200,19 +201,28 @@
 									while (rs.next()) {
 								%>
 								<tr>
+									<td class="center"><%=rs.getInt("o.order_id")%></td>
 								    <td class="center"><%=rs.getString("o.name")%></td>
-									<td class="center"><%=rs.getString("o.name")%></td>
 									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
-									<td class="center"><%=rs.getString("guest_team")%></td>
-									<td class="center"><%=rs.getString("match_result")%></td>
-									
-									<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-calendar icon-white"></i>  
-										下注                                            
-									</a>
+									<td class="center"><%=rs.getString("r.host_team")%></td>
+									<td class="center"><%=rs.getString("r.guest_team")%></td>
+									<td class="center"><%=rs.getString("r.match_result")%></td>
+									<td class="center"><%=form.format(rs.getFloat("r.rate"))%></td>
+									<td class="center"><%=rs.getString("o.order_time")%></td>									
+									<td class="center">										
+											<%if (rs.getString("o.order_status").equals("valid"))
+											  {%>
+											  	<span class="label label-success">未结算</span>
+											  <%}	
+											  else if (rs.getString("o.order_status").equals("finished"))
+											  {%>
+											  	<span class="label"已结算</span>
+											  <%}
+											  else if (rs.getString("o.order_status").equals("invliad"))
+											  {%>
+											  	<span class="label label-important"无效</span>
+											  <%}%>	                                           
 								    </td>
-								    <td class="center"><%=rs.getString("rate_id")%></td>
 								</tr>
 								<%}
 								if (rs != null) {

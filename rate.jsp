@@ -11,7 +11,7 @@
 	st =con.createStatement(); 
 	String combineSQL= "select * from myrate where rate_status='open'";
 	rs = st.executeQuery(combineSQL);	
-	String username="karl liu";
+	String username="ding yingqi";
 %>
 
 <!DOCTYPE html>
@@ -139,6 +139,7 @@
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li class="nav-header hidden-tablet">Main</li>
 						<li><a class="ajax-link" href="index.jsp"><i class="icon-home"></i><span class="hidden-tablet"> 首页</span></a></li>
+						<li><a class="ajax-link" href="myorder.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 我的投注</span></a></li>
 						<li><a class="ajax-link" href="rate.jsp"><i class="icon-signal"></i><span class="hidden-tablet"> 赔率</span></a></li>
 						<li><a class="ajax-link" href="match.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 比赛</span></a></li>
 						<li><a class="ajax-link" href="order.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 投注一览</span></a></li>
@@ -189,7 +190,6 @@
 								  <th>结果</th>
 								  <th>赔率</th>
 								  <th>状态</th>
-								  <th>ID</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
@@ -207,7 +207,6 @@
 										下注                                            
 									</a>
 								    </td>
-								    <td class="center"><%=rs.getString("rate_id")%></td>
 								</tr>
 								<%}
 								if (rs != null) {
