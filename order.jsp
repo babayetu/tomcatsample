@@ -9,7 +9,7 @@
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myrate where rate_status='open'";
+	String combineSQL= "select o.order_id,o.name,o.money,r.host_team,r.guest_team,r.match_result,r.rate,o.order_time,o.order_status from myorder o, myrate r where o.rate_id=r.rate_id";
 	rs = st.executeQuery(combineSQL);	
 	String username="karl liu";
 %>
@@ -184,23 +184,28 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
+								  <th>投注单</th>
+								  <th>用户</th>
+								  <th>金额</th>
 								  <th>主队</th>
 								  <th>客队</th>
-								  <th>结果</th>
+								  <th>胜负</th>
 								  <th>赔率</th>
+								  <th>投注日期</th>
 								  <th>状态</th>
-								  <th>ID</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
 								<%
 									while (rs.next()) {
 								%>
-								<tr id="<%=rs.getString("rate_id")%>">
-									<td><%=rs.getString("host_team")%></td>
+								<tr>
+								    <td class="center"><%=rs.getString("o.name")%></td>
+									<td class="center"><%=rs.getString("o.name")%></td>
+									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
 									<td class="center"><%=rs.getString("guest_team")%></td>
 									<td class="center"><%=rs.getString("match_result")%></td>
-									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
+									
 									<td class="center">
 									<a class="btn btn-success" href="#">
 										<i class="icon-calendar icon-white"></i>  
@@ -231,25 +236,6 @@
 				</div><!--/fluid-row-->
 				
 		<hr>
-
-		<div class="modal hide fade" id="myModal" value="original">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>投注</h3>
-			</div>
-			<fieldset>
-				<div class="modal-body">
-					下注金额   
-					<input id="betmoney" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-                    <p class="help-block">最小下注金额为1</p>
-				</div>
-			</fieldset>		
-			
-			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">关闭</a>
-				<a href="#" class="btn btn-primary" data-dismiss="modal">投注</a>
-			</div>
-		</div>
 
 		<footer>
 			<p class="pull-left">&copy; <a href="http://usman.it" target="_blank">Muhammad Usman</a> 2012</p>

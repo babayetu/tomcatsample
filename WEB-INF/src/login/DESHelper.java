@@ -22,14 +22,14 @@ public class DESHelper {
 	public static void main(String[] args) {
 
 		try {
-			String str = "mobile:13757352769|type:w|content:luoguoping";
+			String str = "user:luoguoping|role:gambler";
 			// encrypt
 			String password = "01010101";
 			String desc = DESHelper.DoDES(str, password, 0);
-			System.out.println("encypted" + desc);
+			System.out.println("encypted:" + desc);
 			// decrypt
 			str = DESHelper.DoDES(desc, password, 1);
-			System.out.println("decypted" + str);
+			System.out.println("decypted:" + str);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

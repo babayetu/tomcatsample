@@ -1,15 +1,17 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*" %>
+<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
 
 <%
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
+	DecimalFormat form=new DecimalFormat("0.00"); 
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myuser order by money desc";
+	String combineSQL= "select * from myrate where rate_status='open'";
 	rs = st.executeQuery(combineSQL);	
+	String username="karl liu";
 %>
 
 <!DOCTYPE html>
@@ -83,7 +85,7 @@
 				<!-- theme selector starts -->
 				<div class="btn-group pull-right theme-container" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-tint"></i><span class="hidden-phone"> Change Theme / Skin</span>
+						<i class="icon-tint"></i><span class="hidden-phone"> Theme</span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu" id="themes">
@@ -103,7 +105,7 @@
 				<!-- user dropdown starts -->
 				<div class="btn-group pull-right" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone"> admin</span>
+						<i class="icon-user"></i><span class="hidden-phone" id="betuser"><%=username%></span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
@@ -181,21 +183,30 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
-								  <th>Username</th>
-								  <th>Date registered</th>
-								  <th>Role</th>
-								  <th>Point</th>
+								  <th>主队</th>
+								  <th>客队</th>
+								  <th>结果</th>
+								  <th>赔率</th>
+								  <th>状态</th>
+								  <th>ID</th>
 							  </tr>
 						  </thead>   
 						  <tbody>
 								<%
 									while (rs.next()) {
 								%>
-								<tr>
-									<td><%=rs.getString(1)%></td>
-									<td class="center"><%=rs.getString(4)%></td>
-									<td class="center"><%=rs.getString(2)%></td>
-									<td class="center"><%=rs.getString(6)%></td>
+								<tr id="<%=rs.getString("rate_id")%>">
+									<td><%=rs.getString("host_team")%></td>
+									<td class="center"><%=rs.getString("guest_team")%></td>
+									<td class="center"><%=rs.getString("match_result")%></td>
+									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
+									<td class="center">
+									<a class="btn btn-success" href="#">
+										<i class="icon-calendar icon-white"></i>  
+										下注                                            
+									</a>
+								    </td>
+								    <td class="center"><%=rs.getString("rate_id")%></td>
 								</tr>
 								<%}
 								if (rs != null) {
@@ -220,17 +231,22 @@
 				
 		<hr>
 
-		<div class="modal hide fade" id="myModal">
+		<div class="modal hide fade" id="myModal" value="original">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>Settings</h3>
+				<h3>投注</h3>
 			</div>
-			<div class="modal-body">
-				<p>Here settings can be configured...</p>
-			</div>
+			<fieldset>
+				<div class="modal-body">
+					下注金额   
+					<input id="betmoney" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                    <p class="help-block">最小下注金额为1</p>
+				</div>
+			</fieldset>		
+			
 			<div class="modal-footer">
-				<a href="#" class="btn" data-dismiss="modal">Close</a>
-				<a href="#" class="btn btn-primary">Save changes</a>
+				<a href="#" class="btn" data-dismiss="modal">关闭</a>
+				<a href="#" class="btn btn-primary" data-dismiss="modal">投注</a>
 			</div>
 		</div>
 
