@@ -1,15 +1,14 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
+<%@ page import= "java.sql.*, util.NationName" %>
 
 <%
 	Connection con = null;
 	Statement st = null;
 	ResultSet rs = null;
-	DecimalFormat form=new DecimalFormat("0.00"); 
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myrate where rate_status='open'";
+	String combineSQL= "select * from mymatch";
 	rs = st.executeQuery(combineSQL);	
 	String username="karl liu";
 %>
@@ -185,10 +184,11 @@
 						<table class="table table-striped table-bordered bootstrap-datatable datatable">
 						  <thead>
 							  <tr>
+							  	  <th>比赛时间</th>
 								  <th>主队</th>
 								  <th>客队</th>
-								  <th>结果</th>
-								  <th>赔率</th>
+								  <th>主队比分</th>
+								  <th>客队比分</th>
 								  <th>状态</th>
 							  </tr>
 						  </thead>   
@@ -196,18 +196,26 @@
 								<%
 									while (rs.next()) {
 								%>
-								<tr id="<%=rs.getString("rate_id")%>">
-									<td><%=rs.getString("host_team")%></td>
-									<td class="center"><%=rs.getString("guest_team")%></td>
-									<td class="center"><%=rs.getString("match_result")%></td>
-									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
-									<td class="center">
-									<a class="btn btn-success" href="#">
-										<i class="icon-calendar icon-white"></i>  
-										下注                                            
-									</a>
+								<tr>
+									<td class="center"><%=rs.getString("match_time")%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("host_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("guest_team"))%></td>
+									<td class="center"><%=rs.getString("host_score")%></td>
+									<td class="center"><%=rs.getString("guest_score")%></td>
+									<td class="center">										
+											<%if (rs.getString("match_status").equals("notstart"))
+											  {%>
+											  	<span class="label label-success">尚未开始</span>
+											  <%}	
+											  else if (rs.getString("match_status").equals("finished"))
+											  {%>
+											  	<span class="label label-important">已结束</span>
+											  <%}
+											  else if (rs.getString("match_status").equals("inprogress"))
+											  {%>
+											  	<span class="label label-warning">进行中</span>
+											  <%}%>	                                           
 								    </td>
-								    <td class="center"><%=rs.getString("rate_id")%></td>
 								</tr>
 								<%}
 								if (rs != null) {

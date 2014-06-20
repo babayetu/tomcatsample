@@ -1,5 +1,5 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
+<%@ page import= "java.sql.*, java.text.DecimalFormat,util.NationName" %>
 
 <%
 	Connection con = null;
@@ -197,8 +197,8 @@
 									while (rs.next()) {
 								%>
 								<tr id="<%=rs.getString("rate_id")%>">
-									<td><%=rs.getString("host_team")%></td>
-									<td class="center"><%=rs.getString("guest_team")%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("host_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("guest_team"))%></td>
 									<td class="center"><%=rs.getString("match_result")%></td>
 									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
 									<td class="center">

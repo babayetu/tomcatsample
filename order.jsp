@@ -1,5 +1,5 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*, java.text.DecimalFormat" %>
+<%@ page import= "java.sql.*, java.text.DecimalFormat,util.NationName" %>
 
 <%
 	Connection con = null;
@@ -204,8 +204,8 @@
 									<td class="center"><%=rs.getInt("o.order_id")%></td>
 								    <td class="center"><%=rs.getString("o.name")%></td>
 									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
-									<td class="center"><%=rs.getString("r.host_team")%></td>
-									<td class="center"><%=rs.getString("r.guest_team")%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("r.host_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("r.guest_team"))%></td>
 									<td class="center"><%=rs.getString("r.match_result")%></td>
 									<td class="center"><%=form.format(rs.getFloat("r.rate"))%></td>
 									<td class="center"><%=rs.getString("o.order_time")%></td>									
