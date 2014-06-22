@@ -9,7 +9,7 @@
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from myrate where rate_status='open'";
+	String combineSQL= "select r.rate_id, r.rate, r.match_result, m.host_team, m.guest_team from myrate r, mymatch m where r.rate_status='open' and r.match_id=m.match_id;";
 	rs = st.executeQuery(combineSQL);	
 	String username="ding yingqi";
 %>
@@ -177,12 +177,12 @@
 					<div class="box-header well" data-original-title>
 						<h2><i class="icon-user"></i> Score table</h2>
 						<div class="box-icon">
-							<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+							<a href="#" class="btn btn-addrate btn-round"><i class="icon-plus"></i></a>
 							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
 						</div>
 					</div>
 					<div class="box-content">
-						<table class="table table-striped table-bordered bootstrap-datatable datatable">
+						<table class="table table-striped table-bordered bootstrap-datatable">
 						  <thead>
 							  <tr>
 								  <th>主队</th>
@@ -196,11 +196,11 @@
 								<%
 									while (rs.next()) {
 								%>
-								<tr id="<%=rs.getString("rate_id")%>">
-									<td class="center"><%=NationName.findZH(rs.getString("host_team"))%></td>
-									<td class="center"><%=NationName.findZH(rs.getString("guest_team"))%></td>
-									<td class="center"><%=rs.getString("match_result")%></td>
-									<td class="center"><%=form.format(rs.getFloat("rate"))%></td>
+								<tr id="<%=rs.getString("r.rate_id")%>">
+									<td class="center"><%=NationName.findZH(rs.getString("m.host_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("m.guest_team"))%></td>
+									<td class="center"><%=rs.getString("r.match_result")%></td>
+									<td class="center"><%=form.format(rs.getFloat("r.rate"))%></td>
 									<td class="center">
 									<a class="btn btn-success" href="#">
 										<i class="icon-calendar icon-white"></i>  

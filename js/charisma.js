@@ -298,6 +298,25 @@ function docReady(){
     		alert(data);
   		});	
 	});
+    $('.btn-setting').click(function(e){
+		e.preventDefault();
+        $('#myUpdateMatch').val($(this).parent().parent().attr("id"));
+		$('#myUpdateMatch').modal('show'); 				      
+	});
+    $('.btn-info').click(function(e){
+		$.post("/tomcatsample/updatematch.do",
+  		{
+    		hostscore:$("#hostscore").val(),
+    		guestscore:$("#guestscore").val(),
+    		match_id:$('#myUpdateMatch').val()
+  		},
+  		function(data,status){
+    		alert(data);
+  		});	
+	});
+    $('.btn-addrate').click(function(e){
+		alert("add rate is called");
+	});
 		
 	//initialize the external events for calender
 

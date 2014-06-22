@@ -41,6 +41,7 @@ public class OrderSubmit extends HttpServlet {
     	Connection con = null;
 		Statement st = null;
 		ResultSet rs = null;
+		PreparedStatement pstat = null;
 
 		try {
 			con = DriverManager.getConnection("proxool.mysql");
@@ -53,14 +54,16 @@ public class OrderSubmit extends HttpServlet {
 			sb.delete(0, sb.length());
 			if (rs != null && rs.next()) {
 				Double balance = rs.getDouble("money");
-				if (balance > Double.valueOf(betmoney)) {
+				if (balance >= Double.valueOf(betmoney)) {
+					
+					//insert into myorder, make it happen
 					java.sql.Date date=new java.sql.Date(new java.util.Date().getTime());
 					sb.append("insert into myorder(name,money,rate_id,order_time) values('")
 					   .append(betuser).append("',")
 					   .append(betmoney).append(",")
 					   .append(rate_id).append(",'")
 					   .append(date.toString()).append("')");
-					PreparedStatement pstat =con.prepareStatement(sb.toString());
+					pstat =con.prepareStatement(sb.toString());
 					pstat.executeUpdate();
 					sb.delete(0, sb.length());
 					sb.append("update myuser set money=")
@@ -71,17 +74,17 @@ public class OrderSubmit extends HttpServlet {
 					con.commit();
 					response.setContentType("text/html;charset=UTF-8");
 			    	Writer out = response.getWriter();
-			    	out.write(betuser + " Í¶×¢³É¹¦!");
+			    	out.write(betuser + " ä¸‹æ³¨æˆåŠŸï¼");
 				} else {
 					response.setContentType("text/html;charset=UTF-8");
 			    	Writer out = response.getWriter();
-			    	out.write(betuser + " Óà¶î²»×ã,½öÎª" + balance + "µã,ÎŞ·¨Í¶×¢¡£");
+			    	out.write(betuser + " ä½™é¢ä¸è¶³ï¼Œä»…æœ‰" + balance + "ç‚¹ï¼Œä¸‹æ³¨å¤±è´¥ï¼");
 				}				
 			} else {		
 				// Not found user in database
 		    	response.setContentType("text/html;charset=UTF-8");
 		    	Writer out = response.getWriter();
-		    	out.write(betuser + " ²»ÊÇ²ÎÈüÕß,ÎŞ·¨Í¶×¢¡£ÇëÁªÏµ¹ÜÀíÔ±³äÖµ£¡");
+		    	out.write(betuser + " ä¸æ˜¯å‚èµ›è€…ï¼Œè¯·è”ç³»ç®¡ç†å‘˜ï¼");
 			}			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,8 +96,11 @@ public class OrderSubmit extends HttpServlet {
                    if (st != null) {
                           st.close();
                    }
+                   if (pstat != null) {
+                	   pstat.close(); 
+                   }
                    if (con != null) {
-                          con.close();
+                       con.close();
                    }
             } catch (Exception e) {
                    e.printStackTrace();

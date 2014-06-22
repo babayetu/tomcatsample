@@ -7,10 +7,10 @@
 	ResultSet rs = null;
 	DecimalFormat form=new DecimalFormat("0.00"); 
 	
-	String username="karl liu";
+	String username="jacky";
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select o.order_id,o.name,o.money,r.host_team,r.guest_team,r.match_result,r.rate,o.order_time,o.order_status from myorder o, myrate r where o.name='" + username+"' and o.rate_id = r.rate_id;";
+	String combineSQL= "select o.order_id,o.name,o.money,m.host_team,m.guest_team,r.match_result,r.rate,o.order_time,o.order_status from myorder o, myrate r, mymatch m where o.name='" +username+"' and o.rate_id=r.rate_id and r.match_id=m.match_id";
 	rs = st.executeQuery(combineSQL);		
 %>
 
@@ -204,8 +204,8 @@
 									<td class="center"><%=rs.getInt("o.order_id")%></td>
 								    <td class="center"><%=rs.getString("o.name")%></td>
 									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
-									<td class="center"><%=NationName.findZH(rs.getString("r.host_team"))%></td>
-									<td class="center"><%=NationName.findZH(rs.getString("r.guest_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("m.host_team"))%></td>
+									<td class="center"><%=NationName.findZH(rs.getString("m.guest_team"))%></td>
 									<td class="center"><%=rs.getString("r.match_result")%></td>
 									<td class="center"><%=form.format(rs.getFloat("r.rate"))%></td>
 									<td class="center"><%=rs.getString("o.order_time")%></td>									
@@ -214,14 +214,18 @@
 											  {%>
 											  	<span class="label label-success">未结算</span>
 											  <%}	
-											  else if (rs.getString("o.order_status").equals("finished"))
+											  else if (rs.getString("o.order_status").equals("bingo"))
 											  {%>
-											  	<span class="label">已结算</span>
+											  	<span class="label">已结算押中</span>
 											  <%}
-											  else if (rs.getString("o.order_status").equals("invliad"))
+											  else if (rs.getString("o.order_status").equals("missed"))
+											  {%>
+											  	<span class="label">已结算未押中</span>
+											  <%}
+											  else if (rs.getString("o.order_status").equals("invalid"))
 											  {%>
 											  	<span class="label label-important">无效</span>
-											  <%}%>	                                           
+											  <%}%>                                           
 								    </td>
 								</tr>
 								<%}

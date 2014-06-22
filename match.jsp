@@ -8,7 +8,7 @@
 	
 	con = DriverManager.getConnection("proxool.mysql");
 	st =con.createStatement(); 
-	String combineSQL= "select * from mymatch";
+	String combineSQL= "select * from mymatch order by match_id desc";
 	rs = st.executeQuery(combineSQL);	
 	String username="karl liu";
 %>
@@ -181,7 +181,7 @@
 						</div>
 					</div>
 					<div class="box-content">
-						<table class="table table-striped table-bordered bootstrap-datatable datatable">
+						<table class="table table-striped table-bordered bootstrap-datatable">
 						  <thead>
 							  <tr>
 							  	  <th>比赛时间</th>
@@ -196,26 +196,23 @@
 								<%
 									while (rs.next()) {
 								%>
-								<tr>
+								<tr id="<%=rs.getString("match_id")%>">
 									<td class="center"><%=rs.getString("match_time")%></td>
 									<td class="center"><%=NationName.findZH(rs.getString("host_team"))%></td>
 									<td class="center"><%=NationName.findZH(rs.getString("guest_team"))%></td>
 									<td class="center"><%=rs.getString("host_score")%></td>
 									<td class="center"><%=rs.getString("guest_score")%></td>
-									<td class="center">										
-											<%if (rs.getString("match_status").equals("notstart"))
-											  {%>
-											  	<span class="label label-success">尚未开始</span>
-											  <%}	
-											  else if (rs.getString("match_status").equals("finished"))
-											  {%>
-											  	<span class="label label-important">已结束</span>
-											  <%}
-											  else if (rs.getString("match_status").equals("inprogress"))
-											  {%>
-											  	<span class="label label-warning">进行中</span>
-											  <%}%>	                                           
-								    </td>
+									<td class="center">
+									<%if (rs.getString("match_status").equals("notstarted")){%>
+										<span class="label label-success">尚未开始</span>
+										<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+									<%} else if (rs.getString("match_status").equals("finished")) {%>
+										<span class="label label-important">已结束</span>
+									<%}else if (rs.getString("match_status").equals("inprogress")){%>
+										<span class="label label-warning">进行中</span>
+										<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+									<%}%>
+									</td>
 								</tr>
 								<%}
 								if (rs != null) {
@@ -240,22 +237,23 @@
 				
 		<hr>
 
-		<div class="modal hide fade" id="myModal" value="original">
+		<div class="modal hide fade" id="myUpdateMatch" value="matchid">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">×</button>
-				<h3>投注</h3>
+				<h3>比赛结果更新</h3>
 			</div>
 			<fieldset>
 				<div class="modal-body">
-					下注金额   
-					<input id="betmoney" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-                    <p class="help-block">最小下注金额为1</p>
+					<p>主队比分   
+					<input id="hostscore" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></p>
+					<p>客队比分
+					<input id="guestscore" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"></p>
 				</div>
 			</fieldset>		
 			
 			<div class="modal-footer">
 				<a href="#" class="btn" data-dismiss="modal">关闭</a>
-				<a href="#" class="btn btn-primary" data-dismiss="modal">投注</a>
+				<a href="#" class="btn btn-info" data-dismiss="modal">更新</a>
 			</div>
 		</div>
 
