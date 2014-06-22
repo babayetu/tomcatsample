@@ -1,5 +1,5 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*" %>
+<%@ page import= "java.sql.*, util.RoleEnum, login.DecryptKeys" %>
 
 <%
 	Connection con = null;
@@ -10,23 +10,31 @@
 	st =con.createStatement(); 
 	String combineSQL= "select * from myuser order by money desc";
 	rs = st.executeQuery(combineSQL);	
+	
+	DecryptKeys dk = new DecryptKeys();
+	dk.phraseCookie(request);
+
+	String username=dk.getmName();
+	String role = dk.getmRole();
+	String money = dk.getmMoney();
+	boolean login = true;
+	
+	if (username==null || username.isEmpty()) {
+		username="Guest";
+		login = false;
+	}
+	if (role==null || role.isEmpty()) {
+		role="watcher";
+		login = false;
+	}
+
 %>
 
 <!DOCTYPE html>
 <html">
 <head>
-	<!--
-		Charisma v1.0.0
-
-		Copyright 2012 Muhammad Usman
-		Licensed under the Apache License v2.0
-		http://www.apache.org/licenses/LICENSE-2.0
-
-		http://usman.it
-		http://twitter.com/halalit_usman
-	-->
 	<meta charset="utf-8">
-	<title>Free HTML5 Bootstrap Admin Template</title>
+	<title>BetPal</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="description" content="Betpal">
 	<meta name="author" content="Karl Liu">
@@ -79,7 +87,6 @@
 					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="index.html"> <img alt="Charisma Logo" src="img/logo20.png" /> <span>Betpal</span></a>
-				
 				<!-- theme selector starts -->
 				<div class="btn-group pull-right theme-container" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -103,7 +110,7 @@
 				<!-- user dropdown starts -->
 				<div class="btn-group pull-right" >
 					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-						<i class="icon-user"></i><span class="hidden-phone"> admin</span>
+						<i class="icon-user"></i><span class="hidden-phone"><%=username%></span>
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
@@ -141,7 +148,11 @@
 						<li><a class="ajax-link" href="rate.jsp"><i class="icon-signal"></i><span class="hidden-tablet"> 赔率</span></a></li>
 						<li><a class="ajax-link" href="match.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 比赛</span></a></li>
 						<li><a class="ajax-link" href="order.jsp"><i class="icon-align-justify"></i><span class="hidden-tablet"> 投注一览</span></a></li>
+						<%if (!login) {%>
 						<li><a href="login.html"><i class="icon-lock"></i><span class="hidden-tablet"> 登录</span></a></li>
+						<%} else {%>
+						<li><a href="logout.jsp"><i class="icon-lock"></i><span class="hidden-tablet"> 退出</span></a></li>
+						<%}%>
 					</ul>
 					<label id="for-is-ajax" class="hidden-tablet" for="is-ajax"><input id="is-ajax" type="checkbox"> Ajax on menu</label>
 				</div><!--/.well -->
@@ -173,9 +184,9 @@
 			<div class="row-fluid sortable">		
 				<div class="box span12">
 					<div class="box-header well" data-original-title>
-						<h2><i class="icon-user"></i> Score table</h2>
+						<h2><i class="icon-user"></i> 用户一览</h2>
 						<div class="box-icon">
-							<a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a>
+							<!-- <a href="#" class="btn btn-setting btn-round"><i class="icon-cog"></i></a> -->
 							<a href="#" class="btn btn-minimize btn-round"><i class="icon-chevron-up"></i></a>
 						</div>
 					</div>
@@ -196,7 +207,7 @@
 								<tr>
 									<td class="center"><%=rs.getString("name")%></td>
 									<td class="center"><%=rs.getString("money")%></td>
-									<td class="center"><%=rs.getString("role")%></td>
+									<td class="center"><%=RoleEnum.findZH(rs.getString("role"))%></td>
 									<td class="center"><%=rs.getString("register_time")%></td>
 								</tr>
 								<%}
@@ -237,8 +248,8 @@
 		</div>
 
 		<footer>
-			<p class="pull-left">&copy; <a href="http://usman.it" target="_blank">Muhammad Usman</a> 2012</p>
-			<p class="pull-right">Powered by: <a href="http://usman.it/free-responsive-admin-template">Charisma</a></p>
+			<p class="pull-left">&copy; <a href="http://www.paypal.com" target="_blank">Karl Liu</a> 2014</p>
+			<p class="pull-right">Powered by: <a href="http://www.paypal.com">PayPal</a></p>
 		</footer>
 		
 	</div><!--/.fluid-container-->

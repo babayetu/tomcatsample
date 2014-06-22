@@ -11,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 public class CheckLogin
 {
 	private String mRole = "watcher";
-	private int mAction = 0;
+	private Double mMoney = 0.0;
+	private String mName = "";
 	
 	public boolean validLogin(HttpServletRequest request)
 	{
-		String name=request.getParameter("txtName");
-		String pwd=request.getParameter("txtPwd");
+		String name=request.getParameter("username");
+		String pwd=request.getParameter("password");
 		
 		if (name == null || name.isEmpty() || pwd ==null || pwd.isEmpty()) {
 			return false;
@@ -36,7 +37,8 @@ public class CheckLogin
 				if (Md5Hash.md5(pwd).equals(rs.getString("passwd"))) {
 					result = true;
 					this.setmRole(rs.getString("role"));
-					this.setmAction(rs.getInt("action"));
+					this.setmMoney(rs.getDouble("money"));
+					this.setmName(rs.getString("name"));
 				} else {
 					result = false;
 				}
@@ -74,13 +76,21 @@ public class CheckLogin
 		this.mRole = mRole;
 	}
 
-	public int getmAction() {
-		return mAction;
+	public Double getmMoney() {
+		return mMoney;
 	}
 
-	private void setmAction(int mAction) {
-		this.mAction = mAction;
+	public void setmMoney(Double mMoney) {
+		this.mMoney = mMoney;
 	}
-	
+
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+
 	
 }

@@ -4,14 +4,6 @@
 	version="2.4">
 
 	<servlet>
-		<servlet-name>bet</servlet-name>
-		<servlet-class>tomcatsample.servlet</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>sqltest</servlet-name>
-		<servlet-class>tomcatsample.MysqlServlet</servlet-class>
-	</servlet>
-	<servlet>
 		<servlet-name>ProxoolAdmin</servlet-name>
 		<servlet-class>org.logicalcobwebs.proxool.admin.servlet.AdminServlet
 		</servlet-class>
@@ -39,15 +31,6 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>bet</servlet-name>
-		<url-pattern>/bet.do</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>sqltest</servlet-name>
-		<url-pattern>/sqltest.do</url-pattern>
-	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ProxoolAdmin</servlet-name>
 		<url-pattern>/proxooladmin</url-pattern>

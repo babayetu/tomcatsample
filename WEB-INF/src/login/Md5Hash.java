@@ -26,11 +26,11 @@ public class Md5Hash {
 	}
 	
 	public static void main(String[] args) {
-		String passwd_encrypt1 = md5("hello123");
+		String passwd_encrypt1 = md5("11111111");
 		System.out.println(passwd_encrypt1);
 		String passwd_encrypt2 = md5("let's do it2");
 		System.out.println(passwd_encrypt2.equals(passwd_encrypt1));
-		String passwd_encrypt3 = md5("let's do it");
+		String passwd_encrypt3 = "UywYe8bHzq6WhLsGCZ+7gDeC9X8=";
 		System.out.println(passwd_encrypt3.equals(passwd_encrypt1));
 	}
 }
