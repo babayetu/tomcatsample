@@ -52,34 +52,47 @@ public class OrderSubmit extends HttpServlet {
 			sb.append("select * from myuser where name='").append(betuser).append("'");
 			rs = st.executeQuery(sb.toString());
 			sb.delete(0, sb.length());
-			if (rs != null && rs.next()) {
+			if (rs != null && rs.next()) {				
 				Double balance = rs.getDouble("money");
-				if (balance >= Double.valueOf(betmoney)) {
-					
-					//insert into myorder, make it happen
-					java.sql.Date date=new java.sql.Date(new java.util.Date().getTime());
-					sb.append("insert into myorder(name,money,rate_id,order_time) values('")
-					   .append(betuser).append("',")
-					   .append(betmoney).append(",")
-					   .append(rate_id).append(",'")
-					   .append(date.toString()).append("')");
-					pstat =con.prepareStatement(sb.toString());
-					pstat.executeUpdate();
-					sb.delete(0, sb.length());
-					sb.append("update myuser set money=")
-					   .append(String.valueOf(balance - Double.valueOf(betmoney))).append(" where name='")
-					   .append(betuser).append("'");
-					pstat =con.prepareStatement(sb.toString());
-					pstat.executeUpdate();
-					con.commit();
-					response.setContentType("text/html;charset=UTF-8");
+				
+				//judge whether this match is already bet
+				sb.append("select * from myorder o where o.name='").append(betuser).append("'")
+				  .append(" and o.rate_id in (select r1.rate_id from myrate r1, myrate r2 where r2.rate_id=")
+				  .append(rate_id).append(" and r1.match_id=r2.match_id)");
+				rs = st.executeQuery(sb.toString());
+				sb.delete(0, sb.length());
+				if (rs != null && rs.next()) {
+					// user already bet on this match
+			    	response.setContentType("text/html;charset=UTF-8");
 			    	Writer out = response.getWriter();
-			    	out.write(betuser + " 下注成功！");
+			    	out.write(betuser + " 已经投注过本场比赛，请勿反复投注！");
 				} else {
-					response.setContentType("text/html;charset=UTF-8");
-			    	Writer out = response.getWriter();
-			    	out.write(betuser + " 余额不足，仅有" + balance + "点，下注失败！");
-				}				
+					if (balance >= Double.valueOf(betmoney)) {						
+						//insert into myorder, make it happen
+						java.sql.Date date=new java.sql.Date(new java.util.Date().getTime());
+						sb.append("insert into myorder(name,money,rate_id,order_time) values('")
+						.append(betuser).append("',")
+						.append(betmoney).append(",")
+						.append(rate_id).append(",'")
+						.append(date.toString()).append("')");
+						pstat =con.prepareStatement(sb.toString());
+						pstat.executeUpdate();
+						sb.delete(0, sb.length());
+						sb.append("update myuser set money=")
+						.append(String.valueOf(balance - Double.valueOf(betmoney))).append(" where name='")
+						.append(betuser).append("'");
+						pstat =con.prepareStatement(sb.toString());
+						pstat.executeUpdate();
+						con.commit();
+						response.setContentType("text/html;charset=UTF-8");
+			    		Writer out = response.getWriter();
+			    		out.write(betuser + " 下注成功！");
+					} else {
+						response.setContentType("text/html;charset=UTF-8");
+						Writer out = response.getWriter();
+						out.write(betuser + " 余额不足，仅有" + balance + "点，下注失败！");
+					}
+				}
 			} else {		
 				// Not found user in database
 		    	response.setContentType("text/html;charset=UTF-8");
