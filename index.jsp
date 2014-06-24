@@ -1,5 +1,5 @@
 <%@ page contentType= "text/html;charset=UTF-8" %>   
-<%@ page import= "java.sql.*, util.RoleEnum, login.DecryptKeys" %>
+<%@ page import= "java.sql.*, util.*, login.DecryptKeys" %>
 
 <%
 	Connection con = null;
@@ -205,7 +205,7 @@
 									while (rs.next()) {
 								%>
 								<tr>
-									<td class="center"><%=rs.getString("name")%></td>
+									<td class="center"><%=UserName.findZH(rs.getString("name"))%></td>
 									<td class="center"><%=rs.getString("money")%></td>
 									<td class="center"><%=RoleEnum.findZH(rs.getString("role"))%></td>
 									<td class="center"><%=rs.getString("register_time")%></td>

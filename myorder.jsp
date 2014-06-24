@@ -211,7 +211,7 @@
 								%>
 								<tr>
 									<td class="center"><%=rs.getInt("o.order_id")%></td>
-								    <td class="center"><%=rs.getString("o.name")%></td>
+								    <td class="center"><%=UserName.findZH(rs.getString("o.name"))%></td>
 									<td class="center"><%=form.format(rs.getFloat("o.money"))%></td>
 									<td class="center"><%=NationName.findZH(rs.getString("m.host_team"))%></td>
 									<td class="center"><%=NationName.findZH(rs.getString("m.guest_team"))%></td>
