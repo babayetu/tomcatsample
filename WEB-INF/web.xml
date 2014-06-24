@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-app_2_4.xsd"
-	version="2.4">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-app_2_4.xsd" version="2.4">
 
 	<servlet>
 		<servlet-name>ProxoolAdmin</servlet-name>
@@ -30,7 +29,12 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
+	<servlet>
+		<servlet-name>mailservlet</servlet-name>
+		<servlet-class>mail.MailSenderServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
 	<servlet-mapping>
 		<servlet-name>ProxoolAdmin</servlet-name>
 		<url-pattern>/proxooladmin</url-pattern>

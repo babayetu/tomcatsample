@@ -11,9 +11,9 @@ public class DecryptKeys {
 	public void phraseCookie(HttpServletRequest request) {
 		String cookieValue = CookieUtil.getCookieValue(request, "keys");
 		if (cookieValue != null) {
-			System.out.println("cookieValue:" + cookieValue);
+			//System.out.println("cookieValue:" + cookieValue);
 			String decrypt_cookie = DESHelper.DoDES(cookieValue, PASSWORD, 1);
-			System.out.println("decrypt_cookie:" + decrypt_cookie);
+			//System.out.println("decrypt_cookie:" + decrypt_cookie);
 			
 			if (decrypt_cookie == null) {
 				return;
